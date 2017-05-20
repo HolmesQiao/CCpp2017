@@ -1,5 +1,15 @@
 #include "Fighting.h"
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+
+//#ifndef DIRECTION
+//#define DIRECTION
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+//#endif
 
 /*************************Friend Class**************************/
 class Friend : public Fighting{
@@ -9,8 +19,8 @@ class Friend : public Fighting{
 class Enemy : public Fighting{
 	public:
 		Enemy();
-		void randMove();
-		void moveToFriend(Friend *hero);
+		bool judgeDistence(Friend *hero);
+		void moveToFriend(sf :: Vector2f heroPosition);
 		void attack(Friend *hero);
 	private:
 		float live, maxLive;
@@ -18,12 +28,54 @@ class Enemy : public Fighting{
 
 Enemy :: Enemy(){
 	live = 0;
+	position.x = -100;
+	position.y = -100;
 }
 
-void Enemy :: randMove(){
+bool Enemy :: judgeDistence(Friend *hero){
 }
 
-void Enemy :: moveToFriend(Friend *hero){
+void Enemy :: moveToFriend(sf :: Vector2f heroPosition){
+	float fX = heroPosition.x;
+	float fY = heroPosition.y;
+	if (fX <= position.x && fY <= position.y) 
+		dir = up;
+	else if (fX >= position.x && fY >= position.y)
+		dir = down; 
+	else if (fX <= position.x && fY >= position.y)
+		dir = left; 
+	else if (fX >= position.x && fY <= position.y)
+		dir = right;
+	std :: cout << "-----------------" << dir << "--------------------\n";
+	switch (dir){
+		case up:
+			position.x -= position.x - step / 4 >= 0 ? step / 4 : 0;
+			position.y -= position.y - step / 4 >= 0 ? step / 4 : 0;
+			s[status].setPosition(position);
+			window.draw(s[status]);
+			break;
+		case down:
+			position.x += position.x + step / 4 + edgeX<= windowX ? step / 4 : 0;
+			position.y += position.y + step / 4 + edgeY<= windowY ? step / 4 : 0;
+			s[status + numRun / 4].setPosition(position);
+			window.draw(s[status + numRun / 4]);
+			break;
+		case left:
+			position.x -= position.x - step / 4 >= 0 ? step / 4 : 0;
+			position.y += position.y + step / 4 + edgeY<= windowY ? step / 4 : 0;
+			s[status + numRun / 2].setPosition(position);
+			window.draw(s[status + numRun / 2]);
+			break;
+		case right:
+			position.x += position.x + step / 4 + edgeX <= windowX ? step / 4 : 0;
+			position.y -= position.y - step / 4 >= 0 ? step / 4 : 0;
+			s[status + numRun / 4 * 3].setPosition(position);
+			window.draw(s[status + numRun / 4 * 3]);
+			break;
+	}
+	sf :: Clock clock;
+	for (sf :: Time time = clock.getElapsedTime(); time.asSeconds() <= 0.05f; )
+		time = clock.getElapsedTime();
 }
 
 void Enemy :: attack(Friend *hero){
@@ -102,7 +154,7 @@ void Magic :: loadMagic(){
 void Magic :: move(int magicIndex, Friend* magicFromCharacter){
 		for (std :: vector<int> :: size_type i = 0; i < numEachMagic[magicIndex]; i++){
 			position = magicFromCharacter->position;
-			switch (dir){
+			switch (magicFromCharacter->dir){
 				case up:
 					position.x -= magicFromCharacter->edgeX + 260;
 					position.y -= magicFromCharacter->edgeY + 130;
@@ -122,5 +174,3 @@ void Magic :: move(int magicIndex, Friend* magicFromCharacter){
 			for (sf :: Time time = clock.getElapsedTime(); time.asSeconds() <= 0.04; time = clock.getElapsedTime());
 		}
 }
-
-

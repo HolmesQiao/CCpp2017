@@ -6,7 +6,7 @@
 #endif
 #ifndef DIRECTION
 #define DIRECTION
-enum direction{up, down, left, right}dir;
+enum direction{up, down, left, right};
 #endif
 
 const float step(30.f);
@@ -14,12 +14,14 @@ bool isMovingRight, isMovingLeft, isMovingUp, isMovingDown;
 int rank(0);
 sf :: RenderWindow window(sf :: VideoMode(windowX, windowY), "game");
 
+/*****************************Item*Class********************************/
 class Item{
 	public:
 		Item (): position(450.f, 380.f), status(0), inEdge(true) {}
 
 		sf :: Sprite sprite;
 		sf :: Vector2f position;
+		direction dir;
 		int status;
 		bool inEdge;
 		float edgeX, edgeY;

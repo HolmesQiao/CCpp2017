@@ -4,7 +4,7 @@
 class Fighting : public Character{
 	public:
 		Fighting();
-		void playFightMedia(Scene *scene, direction Dir);
+		void playFightMedia(Scene *scene/*, direction Dir*/);
 	//	void attack(sf :: Keyboard :: Key key, bool isPressed); 
 		void loadFightingData(std :: string path);
 		bool judgeFighting(sf :: Vector2f otherPosition, float otherEdgeX, float otherEdgeY);
@@ -29,9 +29,11 @@ Fighting :: Fighting(){
 
 void Fighting :: loadFightingData(std :: string path){
 	loadCharacter(path);
+	std :: cout << "===========loadFightingdata==========\n";
 	std :: string dataPath = path + "/fight/data";
 	const char *dataP = dataPath.c_str();
 	FILE *fightData = fopen(dataP, "r");
+	std :: cout << "fight data" << dataP << "\n"; 
 	fscanf(fightData, "%f%f%f%d", &maxLive, &strength, &defence, &numMagic);
 	eachImage = numFight / numMagic;
 	for (int i = 0; i < numMagic; i++){
@@ -49,7 +51,8 @@ bool Fighting :: judgeFighting(sf :: Vector2f otherPosition, float otherEdgeX, f
 	return (otherPosition.x >= position.x && otherPosition.y >= position.y && otherPosition.x <= position.x + edgeX && otherPosition.y <= position.y + edgeY);
 }
 
-void Fighting :: playFightMedia(Scene *scene, direction Dir){
+void Fighting :: playFightMedia(Scene *scene/*, direction Dir*/){
+	direction Dir = scene->dir;
 	srand((unsigned) time(NULL));
 	std :: cout << "attack" << std :: endl;
 	std :: cout << "eachImage: " << eachImage << std :: endl;
