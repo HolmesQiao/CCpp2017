@@ -7,8 +7,16 @@
 
 class Scene : public Music{
 	public:
-		Scene() {position.x = -450.f; position.y = -380.f;}
+		Scene(){
+			position.x = -450.f;
+			position.y = -380.f;
+			outX = 0;
+			outY = 0;
+			outDir = 0;
+		}
 		void loadScene(std :: string path);
+		double outX, outY;
+		int outDir;
 	private:
 		sf :: Texture texture;
 		std :: string scenePath;
@@ -16,7 +24,7 @@ class Scene : public Music{
 
 void Scene :: loadScene(std :: string path){
 	FILE *edgeData = fopen((path + "edgeData").c_str(), "r");
-	fscanf(edgeData, "%f%f", &edgeX, &edgeY);
+	fscanf(edgeData, "%f%f%d%lf%lf", &edgeX, &edgeY, &outDir, &outX, &outY);
 	edgeX -= windowX;
 	edgeY -= windowY;
 	//std :: cout << edgeX << std :: endl;

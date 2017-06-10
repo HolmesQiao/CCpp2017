@@ -15,5 +15,5 @@ int main(){
 	superMagic.loadMagic();
 	cout << "******************main*4******************" << endl;
 	Script();
-		return 0;
+	return 0;
 }

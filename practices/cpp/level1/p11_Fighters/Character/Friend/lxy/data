@@ -1,1 +1,11 @@
-12 3 51 112 200 200
+500 380
+16 3 0
+51 112
+200 200
+100
+
+priX priY
+numRun numFight numDie
+edgeX edgeY
+fightX fightY
+maxlive

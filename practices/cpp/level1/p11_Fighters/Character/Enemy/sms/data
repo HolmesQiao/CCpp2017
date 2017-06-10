@@ -1,1 +1,11 @@
-24 0 304 298 0 0
+1000 380 
+24 0 120
+304 298
+0 0
+300
+
+priX priY
+numRun numFight numDie
+edgeX edgeY
+fightX fightY
+maxlive

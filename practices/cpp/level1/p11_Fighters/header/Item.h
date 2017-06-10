@@ -9,29 +9,32 @@
 enum direction{up, down, left, right};
 #endif
 
-const float step(30.f);
+const float step(40.f);
 bool isMovingRight, isMovingLeft, isMovingUp, isMovingDown;
-int rank(0);
+int sceneRank(0);
+int enemyRank(0);
+int friendRank(0);
 sf :: RenderWindow window(sf :: VideoMode(windowX, windowY), "game");
 
 /*****************************Item*Class********************************/
 class Item{
 	public:
-		Item (): position(450.f, 380.f), status(0), inEdge(true) {}
+		Item (): position(450.f, 380.f), status(0), inEdge(true), onScreen(false) {}
 
 		sf :: Sprite sprite;
 		sf :: Vector2f position;
 		direction dir;
 		int status;
 		bool inEdge;
-		float edgeX, edgeY;
+		bool onScreen;
 
-		void update(bool shouldBack);
+		sf :: Vector2f update(bool shouldBack);
 		void move();
-		void handleInput(bool shouldBack);
+		sf :: Vector2f handleInput(bool shouldBack);
+		float edgeX, edgeY;
 };
 
-void Item :: handleInput(bool shouldBack){
+sf :: Vector2f Item :: handleInput(bool shouldBack){
 	if (sf :: Keyboard :: isKeyPressed (sf :: Keyboard :: W))
 		isMovingUp = true;
 	else isMovingUp = false;
@@ -44,15 +47,18 @@ void Item :: handleInput(bool shouldBack){
 	if (sf :: Keyboard :: isKeyPressed (sf :: Keyboard :: D))
 		isMovingRight = true;
 	else isMovingRight = false;
-	update(shouldBack);
+	return update(shouldBack);
 }
 
-void Item :: update(bool shouldBack){
+sf :: Vector2f Item :: update(bool shouldBack){
 	std :: cout << "begain";
+	sf :: Vector2f shouldMove;
 	if (isMovingUp){
 		if (!shouldBack){
 			position.x += step;
 			position.y += step;
+			shouldMove.x = +step;
+			shouldMove.y = +step;
 		}
 		dir = up;
 	}
@@ -60,6 +66,8 @@ void Item :: update(bool shouldBack){
 		if (!shouldBack){
 			position.x -= step;
 			position.y -= step;
+			shouldMove.x = -step;
+			shouldMove.y = -step;
 		}
 		dir = down;
 	}
@@ -67,6 +75,8 @@ void Item :: update(bool shouldBack){
 		if (!shouldBack){
 			position.x += step;
 			position.y -= step;
+			shouldMove.x = +step;
+			shouldMove.y = -step;
 	       }
 	       	dir = left; 
 	}
@@ -74,6 +84,8 @@ void Item :: update(bool shouldBack){
 		if (!shouldBack){
 			position.x -= step;
 			position.y += step;
+			shouldMove.x = -step;
+			shouldMove.y = +step;
 		}
 		dir = right;
 	}
@@ -95,11 +107,14 @@ void Item :: update(bool shouldBack){
 			position.x += step;
 			position.y -= step;
 		}
+		shouldMove.x = 0;
+		shouldMove.y = 0;
 	}
 	std :: cout << "x" << position.x << std :: endl << "y" << position.y << std :: endl;
 	std :: cout << "shouldBack: " << shouldBack << std :: endl;
 	std :: cout << "inEdge: " << inEdge << std :: endl;
 	move();
+	return shouldMove;
 }
 
 void Item :: move(){

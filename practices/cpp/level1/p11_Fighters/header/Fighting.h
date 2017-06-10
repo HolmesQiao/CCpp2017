@@ -9,8 +9,6 @@ class Fighting : public Character{
 		void loadFightingData(std :: string path);
 		bool judgeFighting(sf :: Vector2f otherPosition, float otherEdgeX, float otherEdgeY);
 	private:
-		float live;
-		float maxLive;
 		float strength;
 		float defence;
 		int numMagic;
@@ -19,8 +17,6 @@ class Fighting : public Character{
 };
 
 Fighting :: Fighting(){
-	live = 100.f;
-	maxLive = 100.f;
 	strength = 10.f;
 	defence = 5.f; 
 	numMagic = 1;
@@ -30,7 +26,7 @@ Fighting :: Fighting(){
 void Fighting :: loadFightingData(std :: string path){
 	loadCharacter(path);
 	std :: cout << "===========loadFightingdata==========\n";
-	std :: string dataPath = path + "/fight/data";
+	std :: string dataPath = path + "fight/data";
 	const char *dataP = dataPath.c_str();
 	FILE *fightData = fopen(dataP, "r");
 	std :: cout << "fight data" << dataP << "\n"; 
@@ -42,9 +38,11 @@ void Fighting :: loadFightingData(std :: string path){
 		hurtNumber.push_back(hurt);
 	}
 	fclose(fightData);
-	path = path + "/fight/";
+	/*
+	path = path + "fight/";
 	path = path + "music.wav";
 	loadMusic(path);
+	*/
 }
 
 bool Fighting :: judgeFighting(sf :: Vector2f otherPosition, float otherEdgeX, float otherEdgeY){
